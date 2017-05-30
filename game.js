@@ -1,29 +1,61 @@
 realtime = true;
 resizeCanvas();
 
-player_x = 30;
-player_y = 30;
-size_of_player = 20;
-speed_of_player = 5;
+var pixels_in_meter = 180; 
+var player_x = 5;
+var player_y = 1;
+var size_of_player = 0.1;
+var max_speed_of_player = 3;
+var speed_of_player_x = 0;
+var speed_of_player_y = 0;
+var dt = 1 / 60;
+var gravity_acceleration = 10;
+var flying = true;
+
+var floor = (canvas.height * (2 / 3)) / pixels_in_meter;
 
 function step() {
-	draw();
-	//console.log("Hello");
+	speed_of_player_y += gravity_acceleration * dt;
+	player_x += speed_of_player_x * dt;
+	player_y += speed_of_player_y * dt;
+	Collision();
+	Draw();
 }
 
-function draw() {
-	drawCircle(player_x, player_y, size_of_player, "black");
+function Draw() {
+	drawCircle(player_x * pixels_in_meter, player_y * pixels_in_meter, size_of_player * pixels_in_meter, "black");
+	drawLine(0, floor * pixels_in_meter, canvas.width, floor * pixels_in_meter);
 }
 
-function downKeyDown() {
-	player_y += speed_of_player;
+function Collision() {
+	if (player_y > floor - size_of_player) {
+		player_y = floor - size_of_player;
+		speed_of_player_y = 0;
+		flying = false;
+	}
 }
+
 function upKeyDown() {
-	player_y -= speed_of_player;
+	if (!flying) {
+		speed_of_player_y -= max_speed_of_player;
+		flying = true; 
+	}
 }
+
 function leftKeyDown() {
-	player_x -= speed_of_player;
+	speed_of_player_x = - max_speed_of_player;
 }
+
+function leftKeyUp() {
+	speed_of_player_x = 0;
+}
+
 function rightKeyDown() {
-	player_x += speed_of_player;
+	speed_of_player_x = max_speed_of_player;
 }
+
+function rightKeyUp() {
+	speed_of_player_x = 0;
+}
+
+function downKeyDown() {}

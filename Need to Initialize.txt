@@ -1,0 +1,2 @@
+realtime - boolean. If true, the game cycle is run perpetually. 
+step() - the function that runs every game cycle.

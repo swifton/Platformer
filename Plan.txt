@@ -1,0 +1,10 @@
+30.05
+1.Сделать пол.
+1a. Научиться падать на пол. 
+1б. Коллизия с полом. 
+2. Ходить по полу
+3. Прыгать. 
+
+07.06
+1. Decide whether the map is a bunch of rectangles or a 2D array of squares.
+2. Think about screen scrolling. 
