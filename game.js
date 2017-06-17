@@ -11,6 +11,12 @@ var speed_of_player_y = 0;
 var dt = 1 / 60;
 var gravity_acceleration = 10;
 var flying = true;
+var levelWidth = 100; //
+var levelHeight = 100;//
+var levelMap = new Array(levelWidth);
+var blockPixelWidth = 20;
+var blockPixelHeight = 20;
+
 
 var floor = (canvas.height * (2 / 3)) / pixels_in_meter;
 
@@ -20,11 +26,13 @@ function step() {
 	player_y += speed_of_player_y * dt;
 	Collision();
 	Draw();
+
 }
 
 function Draw() {
 	drawCircle(player_x * pixels_in_meter, player_y * pixels_in_meter, size_of_player * pixels_in_meter, "black");
 	drawLine(0, floor * pixels_in_meter, canvas.width, floor * pixels_in_meter);
+	DrawMap();
 }
 
 function Collision() {
@@ -59,3 +67,51 @@ function rightKeyUp() {
 }
 
 function downKeyDown() {}
+
+function InitializeLevel()
+{
+	for(var i = 0; i < levelWidth; i++)
+	{
+		levelMap[i] = new Array(levelHeight);
+		for(var j = 0; j < levelHeight; j++)
+		{
+			if(j == 22)
+			{
+				levelMap[i][j] = 1;
+			} 
+			else
+			{
+				levelMap[i][j] = 0;
+			}
+		}
+	}	
+}
+
+InitializeLevel();
+//console.log(levelMap);
+
+function DrawMap()
+{
+	for(var i = 0; i < levelWidth; i++)
+	{
+		for(var j = 0; j < levelHeight; j++)
+		{
+			if(levelMap[i][j] != 0)
+			{
+				drawOpaqueRectangle(i * blockPixelWidth, j * blockPixelHeight, blockPixelWidth - 1, blockPixelHeight - 1);
+			}
+		}
+	}
+}	
+
+
+
+
+
+
+
+
+
+
+
+

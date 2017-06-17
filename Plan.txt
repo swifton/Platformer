@@ -8,3 +8,7 @@
 07.06
 1. Decide whether the map is a bunch of rectangles or a 2D array of squares.
 2. Think about screen scrolling. 
+
+24.06
+1. We need to make a collision between the player and blocks.
+2. Make a function to fill the levelMap randomly(with different height).
