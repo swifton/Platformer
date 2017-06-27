@@ -3,7 +3,7 @@ resizeCanvas();
 
 var pixels_in_meter = 180; 
 var player_x = 5;
-var player_y = 1;
+var player_y = 2;
 var size_of_player = 0.1;
 var max_speed_of_player = 3;
 var speed_of_player_x = 0;
@@ -16,31 +16,54 @@ var levelHeight = 100;//
 var levelMap = new Array(levelWidth);
 var blockPixelWidth = 20;
 var blockPixelHeight = 20;
-
+var blockMeterWid = blockPixelWidth / pixels_in_meter;
+var blockMeterHeit = blockPixelHeight / pixels_in_meter;
 
 var floor = (canvas.height * (2 / 3)) / pixels_in_meter;
 
 function step() {
-	speed_of_player_y += gravity_acceleration * dt;
 	player_x += speed_of_player_x * dt;
 	player_y += speed_of_player_y * dt;
-	Collision();
+	
+	var collision = Collision();
+	
+	if (collision) {
+		speed_of_player_y = 0;
+		flying  = false;
+		player_y = collision - size_of_player;
+	}
+	else {
+		
+	}
+	
+	speed_of_player_y += gravity_acceleration * dt;
+	
 	Draw();
-
 }
 
 function Draw() {
 	drawCircle(player_x * pixels_in_meter, player_y * pixels_in_meter, size_of_player * pixels_in_meter, "black");
-	drawLine(0, floor * pixels_in_meter, canvas.width, floor * pixels_in_meter);
 	DrawMap();
 }
 
-function Collision() {
-	if (player_y > floor - size_of_player) {
-		player_y = floor - size_of_player;
-		speed_of_player_y = 0;
-		flying = false;
+function Collision() {	
+	left_top_x = player_x - size_of_player;
+	left_top_y = player_y - size_of_player;
+	bottom_right_x = player_x + size_of_player;
+	bottom_right_y = player_y + size_of_player;
+	
+	left_top_x_block = Math.floor(left_top_x / blockMeterWid);
+	left_top_y_block = Math.floor(left_top_y / blockMeterHeit);
+	bottom_right_x_block = Math.floor(bottom_right_x / blockMeterWid);
+	bottom_right_y_block = Math.floor(bottom_right_y / blockMeterHeit);
+	
+	for (var i = left_top_x_block; i <= bottom_right_x_block; i++) {
+		for (var j = left_top_y_block; j <= bottom_right_y_block; j++) {
+			if (levelMap[i][j]) {return j * blockMeterHeit;}
+		}
 	}
+	
+	return false;
 }
 
 function upKeyDown() {
@@ -75,10 +98,13 @@ function InitializeLevel()
 		levelMap[i] = new Array(levelHeight);
 		for(var j = 0; j < levelHeight; j++)
 		{
-			if(j == 22)
+			if(j == 22 || (j == 19 && i > 20 && i < 30))
 			{
 				levelMap[i][j] = 1;
-			} 
+			}
+			else if (j==21 && i == 45) {
+				levelMap[i][j] = 1;
+			}
 			else
 			{
 				levelMap[i][j] = 0;
