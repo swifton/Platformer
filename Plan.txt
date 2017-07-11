@@ -12,3 +12,6 @@
 24.06
 1. We need to make a collision between the player and blocks.
 2. Make a function to fill the levelMap randomly(with different height).
+
+11.07
+1. Make a floor with bumps

@@ -18,6 +18,8 @@ var blockPixelWidth = 20;
 var blockPixelHeight = 20;
 var blockMeterWid = blockPixelWidth / pixels_in_meter;
 var blockMeterHeit = blockPixelHeight / pixels_in_meter;
+var screenWidth = window.innerWidth - 10;
+var screenHeight = window.innerHeight - 16;
 
 var floor = (canvas.height * (2 / 3)) / pixels_in_meter;
 
@@ -42,7 +44,8 @@ function step() {
 }
 
 function Draw() {
-	drawCircle(player_x * pixels_in_meter, player_y * pixels_in_meter, size_of_player * pixels_in_meter, "black");
+	//drawCircle(player_x * pixels_in_meter, player_y * pixels_in_meter, size_of_player * pixels_in_meter, "black");
+	drawCircle(screenWidth/2, screenHeight/2, size_of_player * pixels_in_meter, "black");
 	DrawMap();
 }
 
@@ -93,18 +96,35 @@ function downKeyDown() {}
 
 function InitializeLevel()
 {
+	var jMin = 0;
+	var flag = 0;
+	var RandomWidth = 0;
 	for(var i = 0; i < levelWidth; i++)
 	{
 		levelMap[i] = new Array(levelHeight);
+
+		if(flag < RandomWidth)
+		{
+			flag++;
+		} 
+		else
+		{
+			RandomWidth = randomInteger(2, 15);
+			jMin = randomInteger(16, 22);
+			flag = 0;
+		}
+		
 		for(var j = 0; j < levelHeight; j++)
 		{
-			if(j == 22 || (j == 19 && i > 20 && i < 30))
+			//|| (j == 19 && i > 20 && i < 30)
+			if(j > jMin)
 			{
 				levelMap[i][j] = 1;
 			}
-			else if (j==21 && i == 45) {
+			
+			/*else if (j==21 && i == 45) {
 				levelMap[i][j] = 1;
-			}
+			}*/
 			else
 			{
 				levelMap[i][j] = 0;
@@ -124,7 +144,9 @@ function DrawMap()
 		{
 			if(levelMap[i][j] != 0)
 			{
-				drawOpaqueRectangle(i * blockPixelWidth, j * blockPixelHeight, blockPixelWidth - 1, blockPixelHeight - 1);
+				drawOpaqueRectangle(i * blockPixelWidth - (player_x * pixels_in_meter) + screenWidth/2,
+				j * blockPixelHeight - (player_y * pixels_in_meter) + screenHeight/2, 
+				blockPixelWidth - 1, blockPixelHeight - 1);
 			}
 		}
 	}
